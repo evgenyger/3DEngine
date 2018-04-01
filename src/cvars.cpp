@@ -58,7 +58,7 @@ void configReadLine(std::ifstream *c)
 
 void configWrite()
 {
-	log("<< Writting configuration file: config.cfg...");
+	log("Writting configuration file: config.cfg...");
 
 	std::ofstream wc;
 	wc.open("config.cfg", std::ios::out | std::ios::trunc);
@@ -66,7 +66,7 @@ void configWrite()
 	for (auto &i : CVarsByName)
 		wc << i.first << " " << i.second->ToString() << std::endl;
 
-	log("<< Writting configuration file: config.cfg...");
+	log("Finished Writting configuration file: config.cfg!");
 }
 
 bool checkCVar(std::string name)

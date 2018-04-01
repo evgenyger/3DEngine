@@ -2,7 +2,7 @@
 #include "log.h"
 
 std::ofstream lout;
-bool blog = FALSE;
+bool blog = TRUE;
 
 std::string timestamp()
 {
@@ -71,6 +71,9 @@ const void log(const char* s)
 void logInit()
 {
 	lout.open("log.txt", std::ofstream::out | std::ofstream::trunc);
-	if(!lout.is_open())
+	if (!lout.is_open())
+	{
 		std::cout << " << [ERROR] Failed opening log file!" << std::endl;
+		blog = FALSE;
+	}
 }

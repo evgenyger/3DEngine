@@ -4,7 +4,6 @@
 #include "renderer.h"
 #include "mouse.h"
 #include "mapf.h"
-#include "error.h"
 #include "log.h"
 
 sf::Window	window;
@@ -135,11 +134,13 @@ void handleKeyboard()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		pExit(EXIT_SUCCESS);
 
+	/* kinda useless
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
 		camera->yaw(-glm::radians(-45.0f) * deltaTime.asSeconds());
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 		camera->yaw(-glm::radians(45.0f) * deltaTime.asSeconds());
+	*/
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::PageUp))
 		camera->move(glm::vec3(0, -1, 0) * deltaTime.asSeconds());

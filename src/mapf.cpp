@@ -16,16 +16,8 @@ ModelInstance *sky = new ModelInstance;
 
 void initModels()
 {
-	models["suzanne"] = suzanne;
-	models["ground"] = ground;
-
 	msky->loadOBJ("sky.obj");
 	msky->texture.load("sky.png");
-
-	ground->loadOBJ("ground.obj");
-	ground->texture.load("ground2.jpg");
-
-	// -----
 
 	sky->type = msky;
 }
@@ -48,24 +40,45 @@ bool mRead()
 	{
 		std::istringstream iss(line);
 		std::string type;
-		auto buff = std::make_unique<ModelInstance>();
 
+		/* define the type of object */
 		iss >> type;
-		auto it = models.find(type);
 
-		if (it == models.end())
+		if (type == "model")
 		{
-			warning(fmt::format("[Warning] Unknown model name {}", type));
-			continue;
+			std::string name, model, tex;
+			Model *buff = new Model;
+			iss >> name >> model >> tex;
+
+			buff->loadOBJ(model);
+			buff->texture.load(tex);
+			models[name] = buff;
 		}
 
-		buff->type = models[type];
+		else if (type == "object")
+		{
+			std::string mtype;
+			auto buff = std::make_unique<ModelInstance>();
 
-		glm::vec3 v;
-		iss >> v.x >> v.y >> v.z;
-		buff->pos = v;
+			iss >> mtype;
+			auto it = models.find(mtype);
 
-		objects.push_back(std::move(buff));
+			if (it == models.end())
+			{
+				warning(fmt::format("[Warning] Unknown model name {}", mtype));
+				continue;
+			}
+
+			buff->type = models[mtype];
+
+			glm::vec3 v;
+			iss >> v.x >> v.y >> v.z;
+			buff->pos = v;
+
+			objects.push_back(std::move(buff));
+		}
+		else
+			warning(fmt::format("Unknown map object type: {}", type));
 	}
 
 	im.close();
