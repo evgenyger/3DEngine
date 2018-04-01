@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "model.h"
+#include "log.h"
 
 void Model::loadOBJ (std::string path)
 {
@@ -15,7 +16,7 @@ void Model::loadOBJ (std::string path)
 	rm.open(path, std::ios::in);
 	if (!rm.is_open())
 	{
-		std::cout << ">> " << path << " >> Failed to load model!" << std::endl;
+		warning(fmt::format("{} >> Failed to load moadel!", path));
 		return;
 	}
 

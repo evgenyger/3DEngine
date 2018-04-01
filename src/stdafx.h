@@ -21,6 +21,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
@@ -32,9 +33,10 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/vector_angle.hpp>
 
+#include "format.h"
+
 #define GETTER(Type, X) Type X() const { return _##X; }
 #define SETTER(Type, X) void Set##X(const Type &value) { _##X = value; }
 #define GETSET(Type, X) GETTER(Type, X) SETTER(Type, X)
 
-#define TIC_DURATION 1.0 / 20
-#define G 9.80665
+#define TIC_DURATION 1.0 / 60

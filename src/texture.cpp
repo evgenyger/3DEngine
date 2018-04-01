@@ -1,10 +1,6 @@
 #include "stdafx.h"
 #include "texture.h"
-
-Texture::Texture()
-{
-	data = 0;
-}
+#include "log.h"
 
 Texture::Texture(int x, int y)
 {
@@ -23,7 +19,7 @@ void Texture::load(std::string path)
 	sf::Image img_data;
 	if (!img_data.loadFromFile(path))
 	{
-		std::cout << " >> " << path << " >> [ERROR] Couldn't open file!" << std::endl;
+		warning(fmt::format("{} >> Failed to load texture!", path));
 		return;
 	}
 

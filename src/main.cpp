@@ -4,11 +4,14 @@
 #include "renderer.h"
 #include "mouse.h"
 #include "mapf.h"
+#include "error.h"
+#include "log.h"
 
-sf::Window window;
-sf::Clock deltaClock;
-sf::Event event;
-sf::Time deltaTime;
+sf::Window	window;
+sf::Clock	dclock;
+sf::Event	event;
+sf::Time	deltaTime, 
+			t1 = sf::Time::Zero, t2;
 
 Mouse *mouse = new Mouse;
 Camera *camera = new Camera;
@@ -27,11 +30,16 @@ extern ModelInstance *cannon;
 extern ModelInstance *target;
 
 void pExit(int value);
+void _terminate();
 void handleKeyboard();
 
 int main()
 {
-	std::cout << "<< Starting..." << std::endl;
+	std::set_terminate(_terminate);
+
+	logInit();
+
+	log("Starting");
 
 	initCVars();
 	configRead();
@@ -42,7 +50,7 @@ int main()
 		settings.minorVersion = 3;
 		settings.antialiasingLevel = r_antialiasing;
 
-	window.create(sf::VideoMode(w_width, w_height), "sfml window", (w_fullscreen) ? sf::Style::Fullscreen : sf::Style::Default, settings);
+	window.create(sf::VideoMode(w_width, w_height), "random shit", (w_fullscreen) ? sf::Style::Fullscreen : sf::Style::Default, settings);
 
 	if ((bool)r_vsync == true)
 		window.setVerticalSyncEnabled(true);
@@ -53,7 +61,7 @@ int main()
 
 	if (glewInit() != GLEW_OK)
 	{
-		std::cout << "<< [ERROR] GLEW couldn't be initialized!" << std::endl;
+		error("GLEW couldn't be initialized!");
 		pExit(EXIT_FAILURE);
 	}
 
@@ -81,7 +89,11 @@ int main()
 			}
 
 			if (sf::Event::MouseMoved)
+			{
 				mouse->handleMove();
+				int dx = mouse->pos.x - mouse->ppos.x;
+				int dy = mouse->pos.y - mouse->ppos.y;
+			}
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -91,7 +103,9 @@ int main()
 		rRender();
 		window.display();
 
-		deltaTime = deltaClock.restart();
+		t2 = dclock.getElapsedTime();
+		deltaTime = t2 - t1;
+		t1 = t2;
 	}
 
 	return 0;
@@ -103,9 +117,16 @@ void pExit(int value)
 	window.close();
 	configWrite();
 
-	std::cout << "<< Stopping..." << std::endl;
+	log("Stopping...");
 
 	exit(value);
+}
+
+/* Terminate function */
+void _terminate()
+{
+	log("PROGRAM TERMINATED");
+	pExit(EXIT_FAILURE);
 }
 
 /* Parse keyboard */

@@ -3,7 +3,7 @@
 class Texture
 {
 public:
-	Texture();
+	Texture() : data(0) {}
 	Texture(int x, int y);
 	Texture(glm::vec2 size);
 	void load(std::string path);

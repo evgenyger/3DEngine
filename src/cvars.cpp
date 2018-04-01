@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "cvars.h"
 #include "math.h"
+#include "log.h"
 
 CVar *CVars = nullptr;
 
@@ -14,21 +15,21 @@ void initCVars()
 
 void configRead()
 {
-	std::cout << "<< Loading configuration file: config.cfg..." << std::endl;
+	log("Loading configuration file: config.cfg...");
 
 	std::ifstream rc;
 	rc.open("config.cfg", std::ios::in);
 
 	if (!rc.is_open())
 	{
-		std::cout << "<< Configuration file wasn't found, a new one will be made on exit..." << std::endl;
+		log("Configuration file was not found, a default one will be made on exit.");
 		return;
 	}
 
 	while (!rc.eof())
 		configReadLine(&rc);
 
-	std::cout << "<< Finished loading configuration file!" << std::endl;
+	log("Finished loading configuration file!");
 	rc.close();
 }
 
@@ -44,7 +45,7 @@ void configReadLine(std::ifstream *c)
 
 	if (!value.size() || c->eof())
 	{
-		std::cout << "<< [Warning] CVar " << cvar.c_str() << ": expected value!" << std::endl;
+		warning(fmt::format("CVar {}: expected value!", cvar.c_str()));
 		return;
 	}
 
@@ -52,12 +53,12 @@ void configReadLine(std::ifstream *c)
 		return;
 
 	getCVar(cvar)->SetString(value);
-	std::cout << ">> config >> " << cvar.c_str() << " = " << value << std::endl;
+	log(fmt::format("config >> {} = {}", cvar.c_str(), value));
 }
 
 void configWrite()
 {
-	std::cout << "<< Writting configuration file: config.cfg..." << std::endl;
+	log("<< Writting configuration file: config.cfg...");
 
 	std::ofstream wc;
 	wc.open("config.cfg", std::ios::out | std::ios::trunc);
@@ -65,7 +66,7 @@ void configWrite()
 	for (auto &i : CVarsByName)
 		wc << i.first << " " << i.second->ToString() << std::endl;
 
-	std::cout << "<< Finished writting configuration file!" << std::endl;
+	log("<< Writting configuration file: config.cfg...");
 }
 
 bool checkCVar(std::string name)
@@ -73,8 +74,7 @@ bool checkCVar(std::string name)
 	std::transform(name.begin(), name.end(), name.begin(), ::tolower);
 	if (CVarsByName.find(name) == CVarsByName.end())
 	{
-		std::cout << "<< [Warning] Unknown CVar " << name.c_str() << "!" << std::endl;
-		CVarsByName.erase(CVarsByName.end());
+		warning(fmt::format("Unknown CVar {}!", name.c_str()));
 		return false;
 	}
 	return true;
@@ -153,6 +153,10 @@ std::string StringCVar::ToString()
 {
 	return _Value;
 }
+
+// system
+
+INT_CVAR(l_type, 0, 0, 3)
 
 // window
 

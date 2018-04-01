@@ -2,6 +2,7 @@
 #include "mapf.h"
 #include "model.h"
 #include "renderer.h"
+#include "log.h"
 
 std::vector<std::unique_ptr<ModelInstance>> objects;
 std::map<std::string, Model*> models;
@@ -36,7 +37,7 @@ bool mRead()
 
 	if (!im.is_open())
 	{
-		std::cout << "<< [ERROR] Map file wasn't found, exiting..." << std::endl;
+		error("Map file wasn't found, exiting");
 
 		im.close();
 		return 1;
@@ -54,7 +55,7 @@ bool mRead()
 
 		if (it == models.end())
 		{
-			std::cout << "<< [Warning] Unknown model name " << type << "! Skipping..." << std::endl;
+			warning(fmt::format("[Warning] Unknown model name {}", type));
 			continue;
 		}
 
