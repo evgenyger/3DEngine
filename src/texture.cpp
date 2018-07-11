@@ -19,7 +19,7 @@ void Texture::load(std::string path)
 	sf::Image img_data;
 	if (!img_data.loadFromFile(path))
 	{
-		warning(fmt::format("{} >> Failed to load texture!", path));
+		warning(fmt::format("{} >> loading failed", path));
 		return;
 	}
 

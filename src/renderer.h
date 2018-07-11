@@ -28,7 +28,7 @@ class Camera
 {
 public:
 	Camera() : fov(45.0f),
-		speed(5.0f)
+		speed(50.0f)
 	{}
 
 	glm::vec3 pos;

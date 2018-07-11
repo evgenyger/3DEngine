@@ -29,7 +29,7 @@ bool mRead()
 
 	if (!im.is_open())
 	{
-		error("Map file wasn't found, exiting");
+		error("No map found");
 
 		im.close();
 		return 1;
@@ -65,7 +65,7 @@ bool mRead()
 
 			if (it == models.end())
 			{
-				warning(fmt::format("[Warning] Unknown model name {}", mtype));
+				warning(fmt::format("Unknown model name {}", mtype));
 				continue;
 			}
 

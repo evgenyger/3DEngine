@@ -15,21 +15,21 @@ void initCVars()
 
 void configRead()
 {
-	log("Loading configuration file: config.cfg...");
+	log("Loading config.cfg...");
 
 	std::ifstream rc;
 	rc.open("config.cfg", std::ios::in);
 
 	if (!rc.is_open())
 	{
-		log("Configuration file was not found, a default one will be made on exit.");
+		log("config.cfg was not found, a default one will be made on exit");
 		return;
 	}
 
 	while (!rc.eof())
 		configReadLine(&rc);
 
-	log("Finished loading configuration file!");
+	log("Finished loading config.cfg");
 	rc.close();
 }
 
@@ -45,7 +45,7 @@ void configReadLine(std::ifstream *c)
 
 	if (!value.size() || c->eof())
 	{
-		warning(fmt::format("CVar {}: expected value!", cvar.c_str()));
+		warning(fmt::format("CVar {}: expected value", cvar.c_str()));
 		return;
 	}
 
@@ -58,7 +58,7 @@ void configReadLine(std::ifstream *c)
 
 void configWrite()
 {
-	log("Writting configuration file: config.cfg...");
+	log("Writting config.cfg...");
 
 	std::ofstream wc;
 	wc.open("config.cfg", std::ios::out | std::ios::trunc);
@@ -66,7 +66,7 @@ void configWrite()
 	for (auto &i : CVarsByName)
 		wc << i.first << " " << i.second->ToString() << std::endl;
 
-	log("Finished Writting configuration file: config.cfg!");
+	log("Finished writting config.cfg");
 }
 
 bool checkCVar(std::string name)

@@ -28,49 +28,14 @@ extern IntCVar r_antialiasing;
 extern ModelInstance *cannon;
 extern ModelInstance *target;
 
+void pInit();
 void pExit(int value);
 void _terminate();
 void handleKeyboard();
 
 int main()
 {
-	std::set_terminate(_terminate);
-
-	logInit();
-
-	log("Starting");
-
-	initCVars();
-	configRead();
-
-	sf::ContextSettings settings;
-		settings.depthBits = 24;
-		settings.stencilBits = 8;
-		settings.minorVersion = 3;
-		settings.antialiasingLevel = r_antialiasing;
-
-	window.create(sf::VideoMode(w_width, w_height), "random shit", (w_fullscreen) ? sf::Style::Fullscreen : sf::Style::Default, settings);
-
-	if ((bool)r_vsync == true)
-		window.setVerticalSyncEnabled(true);
-	else
-		window.setFramerateLimit(r_fpslimit);
-
-	glewExperimental = true;
-
-	if (glewInit() != GLEW_OK)
-	{
-		error("GLEW couldn't be initialized!");
-		pExit(EXIT_FAILURE);
-	}
-
-	initModels();
-
-	rInit();
-	
-	if (mRead())
-		pExit(EXIT_FAILURE);
-
+	pInit();
 
 	while (window.isOpen())
 	{
@@ -108,6 +73,47 @@ int main()
 	}
 
 	return 0;
+}
+
+/* Init function */
+void pInit()
+{
+	std::set_terminate(_terminate);
+
+	logInit();
+
+	log("Starting...");
+
+	initCVars();
+	configRead();
+
+	sf::ContextSettings settings;
+	settings.depthBits = 24;
+	settings.stencilBits = 8;
+	settings.minorVersion = 3;
+	settings.antialiasingLevel = r_antialiasing;
+
+	window.create(sf::VideoMode(w_width, w_height), "random shit", (w_fullscreen) ? sf::Style::Fullscreen : sf::Style::Default, settings);
+
+	if ((bool)r_vsync == true)
+		window.setVerticalSyncEnabled(true);
+	else
+		window.setFramerateLimit(r_fpslimit);
+
+	glewExperimental = true;
+
+	if (glewInit() != GLEW_OK)
+	{
+		error("GLEW was not initialized");
+		pExit(EXIT_FAILURE);
+	}
+
+	initModels();
+
+	rInit();
+
+	if (mRead())
+		pExit(EXIT_FAILURE);
 }
 
 /* Function called on exit */

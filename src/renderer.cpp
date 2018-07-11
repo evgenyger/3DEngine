@@ -3,6 +3,8 @@
 #include "shader.h"
 #include "model.h"
 
+Shader test;
+
 GLuint textureId;
 GLuint matrixId;
 
@@ -10,13 +12,13 @@ glm::mat4 mvp;
 
 void rInit()
 {
-	programId = loadShaders("shaders/testv.vs", "shaders/testf.fs");
-	glUseProgram(programId);
+	test.loadShaders("shaders/testv.vs", "shaders/testf.fs");
+	test.use();
 
 	glEnable(GL_TEXTURE_2D);
 
-	matrixId = glGetUniformLocation(programId, "MVP");
-	textureId = glGetUniformLocation(programId, "textureSampler");
+	matrixId = glGetUniformLocation(test.id, "MVP");
+	textureId = glGetUniformLocation(test.id, "textureSampler");
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
@@ -115,7 +117,7 @@ void rRender()
 
 glm::mat4 const Camera::getProjectionMatrix()
 {
-	return glm::perspective(fov, (float)w_width / (float)w_height, 0.1f, 200.0f);
+	return glm::perspective(fov, (float)w_width / (float)w_height, 0.1f, 1000.0f);
 }
 
 glm::mat4 const Camera::getViewMatrix()
