@@ -11,6 +11,7 @@ extern IntCVar w_width;
 extern IntCVar w_height;
 extern GLuint programId;
 
+extern sf::Window window;
 extern Camera *camera;
 extern Mouse *mouse;
 extern sf::Time deltaTime;
@@ -23,6 +24,7 @@ extern std::vector<std::unique_ptr<ModelInstance>> objects;
 
 void rInit();
 void rRender();
+void rUpdateFBO();
 
 class Camera
 {

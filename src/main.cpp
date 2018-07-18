@@ -47,6 +47,7 @@ int main()
 			if (event.type == sf::Event::Resized)
 			{
 				glViewport(0, 0, event.size.width, event.size.height);
+				rUpdateFBO();
 
 				w_width = (int)window.getSize().x;
 				w_height = (int)window.getSize().y;
@@ -59,8 +60,6 @@ int main()
 				int dy = mouse->pos.y - mouse->ppos.y;
 			}
 		}
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		handleKeyboard();
 
